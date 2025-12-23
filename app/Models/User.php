@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Enums\UserStatus;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +22,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'status',
+        'address',
     ];
 
     /**
@@ -44,6 +48,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => UserStatus::class,
         ];
+    }
+
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
+    /**
+     * User has many payments
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 }
