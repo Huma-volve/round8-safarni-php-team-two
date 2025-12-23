@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    //
+    protected $fillable = [
+        'title',
+        'key',
+    ];
+
+
+    public function photo()
+    {
+        return $this->morphOne(Photo::class, 'imageable');
+    }
 }

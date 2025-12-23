@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\UserStatus;
 
 return new class extends Migration {
     /**
@@ -15,9 +16,10 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone');
             $table->string('password');
-            $table->enum('status', ['pending', 'active'])->default('pending');
-            $table->string('location')->nullable();
+            $table->string('status')->default(UserStatus::PENDING->value);
+            $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

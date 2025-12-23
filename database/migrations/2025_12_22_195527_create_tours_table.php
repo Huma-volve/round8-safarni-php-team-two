@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->boolean('available')->default(true);
             $table->integer('day_num')->default(0);
             $table->integer('night_num')->default(0);
-            $table->string('location')->nullable();
+           $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->timestamps();
         });
     }
