@@ -8,9 +8,14 @@ class Booking extends Model
 {
     protected $fillable = [
         'user_id',
+        'bookable_type',
+        'bookable_id',
         'status',
         'total_price',
-        'booke_date',
+        'check_in_date',
+        'check_out_date',
+        'note_to_owner',
+        'booked_date',
     ];
 
     protected $casts = [
