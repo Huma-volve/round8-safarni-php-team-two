@@ -11,14 +11,22 @@ class HotelController extends Controller
 {
     public function index()
     {
-        $hotels = Hotel::with(['location', 'photos', 'ratings'])->withMin('rooms', 'price')->get();
+        $hotels = Hotel::with(['location', 'photos', 'ratings'])
+            ->withMin('rooms', 'price')
+            ->get();
 
         return apiResponse(true, 'Hotels retrieved successfully', HotelResource::collection($hotels), 200);
     }
 
     public function show($id)
     {
-        $hotel = Hotel::with('rooms.photos', 'rooms.bookings', 'location', 'photos', 'ratings')->find($id);
+        $hotel = Hotel::with([
+            'rooms.photos',
+            'rooms.bookings',
+            'location',
+            'photos',
+            'ratings'
+        ])->find($id);
 
         if (!$hotel) {
             return apiResponse(false, 'Hotel not found', null, 404);
@@ -26,5 +34,4 @@ class HotelController extends Controller
 
         return apiResponse(true, 'Hotel details retrieved successfully', new HotelDetailsResource($hotel), 200);
     }
-
 }
