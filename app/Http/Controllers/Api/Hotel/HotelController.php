@@ -34,4 +34,19 @@ class HotelController extends Controller
 
         return apiResponse(true, 'Hotel details retrieved successfully', new HotelDetailsResource($hotel), 200);
     }
+
+    public function nearbyHotels($lat, $lng, $radius = 10)
+    {
+        $hotels = Hotel::with(['location', 'photos', 'ratings'])
+            ->whereHas('location', function ($q) use ($lat, $lng, $radius) {
+                $q->select('*')->whereNotNull('latitude')->whereNotNull('longitude')->whereRaw(
+                        "(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) <= ?",
+                        [$lat, $lng, $lat, $radius]
+                    );
+            })
+            ->get();
+
+        return apiResponse(true, 'Nearby hotels retrieved successfully', HotelResource::collection($hotels), 200);
+    }
+
 }
