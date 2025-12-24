@@ -26,8 +26,13 @@ class HotelRoom extends Model
         return $this->morphMany(Photo::class, 'imageable');
     }
     public function bookings()
-{
-    return $this->morphMany(Booking::class, 'bookable');
-}
+    {
+        return $this->morphMany(Booking::class, 'bookable');
+    }
+    public function location()
+    {
+        return $this->hotel->location();
+    }
+
 
 }

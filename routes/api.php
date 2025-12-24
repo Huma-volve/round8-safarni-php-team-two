@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HotelBookingController;
 use App\Http\Controllers\Api\HotelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,16 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::middleware('auth:sanctum')->group(function () {
+    // Hotels
+    Route::get('hotels', [HotelController::class, 'index']);
+    Route::get('hotels/{hotel}', [HotelController::class, 'show']);
 
-Route::get('/hotels', [HotelController::class, 'index']);
-Route::get('/hotels/{hotel}', [HotelController::class, 'show']);
+    // Hotel Bookings
+    Route::get('bookings', [HotelBookingController::class, 'index']);
+    Route::post('rooms/{room}/check-availability', [HotelBookingController::class, 'checkAvailability']);
+    Route::post('bookings-add', [HotelBookingController::class, 'store']);
+    Route::get('bookings/{booking}', [HotelBookingController::class, 'show']);
+    Route::post('bookings/{booking}/cancel', [HotelBookingController::class, 'cancel']);
+
+});

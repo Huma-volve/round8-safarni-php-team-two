@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HotelDetailsResource;
 use App\Models\Hotel;
 use App\Http\Resources\HotelResource;
-use App\Http\Resources\HotelDetailsResource;
+use Carbon\Carbon;
 
 class HotelController extends Controller
 {
@@ -13,18 +14,18 @@ class HotelController extends Controller
     {
         $hotels = Hotel::with(['location', 'photos', 'ratings'])->withMin('rooms', 'price')->get();
 
-        return HotelResource::collection($hotels);
+        return apiResponse(true, 'Hotels retrieved successfully', HotelResource::collection($hotels), 200);
     }
 
-    public function show(Hotel $hotel)
+    public function show($id)
     {
-        $hotel->load([
-            'location',
-            'photos',
-            'rooms.photos',
-            'ratings'
-        ]);
+        $hotel = Hotel::with('rooms.photos', 'rooms.bookings', 'location', 'photos', 'ratings')->find($id);
 
-        return new HotelDetailsResource($hotel);
+        if (!$hotel) {
+            return apiResponse(false, 'Hotel not found', null, 404);
+        }
+
+        return apiResponse(true, 'Hotel details retrieved successfully', new HotelDetailsResource($hotel), 200);
     }
+
 }

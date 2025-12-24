@@ -12,13 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bokings', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->morphs('bookable');
             $table->string('status')->default(BookingStatus::PENDING->value);
             $table->decimal('total_price', 8, 2);
-            $table->dateTime("booke_date");
+            $table->date('check_in_date');
+            $table->date('check_out_date');
+            $table->text('note_to_owner')->nullable();
+            $table->dateTime("booked_date");
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bokings');
+        Schema::dropIfExists('bookings');
     }
 };
