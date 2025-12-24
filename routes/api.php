@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Hotel\HotelBookingController;
 use App\Http\Controllers\Api\Hotel\HotelController;
 use App\Http\Controllers\Api\Hotel\HotelRatingController;
+use App\Http\Controllers\Api\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('hotels/{hotel}/update-ratings/{rating}', [HotelRatingController::class, 'update']);
     Route::post('hotels/{hotel}/delete-ratings/{rating}', [HotelRatingController::class, 'destroy']);
 });
+
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('/search', [SearchController::class, 'index']);
+
