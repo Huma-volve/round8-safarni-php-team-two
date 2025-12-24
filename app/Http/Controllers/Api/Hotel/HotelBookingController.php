@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Hotel;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CheckAvailabilityRequest;
-use App\Http\Requests\StoreHotelBookingRequest;
-use App\Models\HotelRoom;
-use App\Models\Booking;
 use App\Enums\BookingStatus;
-use App\Http\Resources\BookingResource;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Hotel\CheckAvailabilityRequest;
+use App\Http\Requests\Hotel\StoreHotelBookingRequest;
+use App\Http\Resources\Hotel\BookingResource;
+use App\Models\Booking;
+use App\Models\HotelRoom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Hotel;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\HotelDetailsResource;
+use App\Http\Resources\Hotel\HotelDetailsResource;
+use App\Http\Resources\Hotel\HotelResource;
 use App\Models\Hotel;
-use App\Http\Resources\HotelResource;
-use Carbon\Carbon;
 
 class HotelController extends Controller
 {

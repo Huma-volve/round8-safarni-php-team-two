@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Hotel;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Enums\BookingStatus;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class HotelDetailsResource extends JsonResource
 {
