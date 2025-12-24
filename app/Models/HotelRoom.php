@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hotel_Room extends Model
+class HotelRoom extends Model
 {
     protected $fillable = [
         'hotel_id',
@@ -21,7 +21,7 @@ class Hotel_Room extends Model
     {
         return $this->belongsTo(Hotel::class);
     }
-     public function photo()
+     public function photos()
     {
         return $this->morphMany(Photo::class, 'imageable');
     }
