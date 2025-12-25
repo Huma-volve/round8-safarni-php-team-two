@@ -36,7 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 }); 
 
-    Route::get('flights/index', [BookFlightController   ::class, 'index']);
 
 
 // Flights
@@ -48,6 +47,9 @@ Route::middleware('auth:sanctum')->prefix('flights/')->group(function () {
     Route::post('{flightId}/book-seat', [BookFlightController::class, 'bookSeat']);
     Route::post('{ticketId}/cancel-seat', [BookFlightController::class, 'cancelTicket']);
     
+
+    Route::get('index', [BookFlightController   ::class, 'index']);
+
 
 
 
