@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\SeetsClass;
 
-class Flight_seats extends Model
+class FlightSeat extends Model
 {
+
+    protected $table = 'flight_seats';
     protected $fillable = [
         'flight_id',
         'seat_number',
         'class',
+        'price',
+        'user_id',
         'is_available',
     ];
 
@@ -30,5 +34,15 @@ class Flight_seats extends Model
     {
         return $this->morphMany(Booking::class, 'bookable');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'flight_seat_id');
+    }
+
 
 }

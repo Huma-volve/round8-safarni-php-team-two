@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Flight\BookFlightController;
+use App\Http\Controllers\Api\Flight\FlightController;
 use App\Http\Controllers\Api\Hotel\HotelBookingController;
 use App\Http\Controllers\Api\Hotel\HotelController;
 use App\Http\Controllers\Api\Hotel\HotelRatingController;
@@ -31,4 +33,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('hotels/{hotel}/add-ratings', [HotelRatingController::class, 'store']);
     Route::post('hotels/{hotel}/update-ratings/{rating}', [HotelRatingController::class, 'update']);
     Route::post('hotels/{hotel}/delete-ratings/{rating}', [HotelRatingController::class, 'destroy']);
+
 });
+
+// Flights
+Route::middleware('auth:sanctum')->prefix('flights/')->group(function () {
+    Route::get('search', [FlightController::class, 'search']);
+    Route::get('{id}', [FlightController::class, 'show']);
+    Route::get('{flightId}/seats', [FlightController::class, 'seats']);
+
+    Route::post('{flightId}/book-seat', [BookFlightController::class, 'bookSeat']);
+    Route::post('{ticketId}/cancel-seat', [BookFlightController::class, 'cancelTicket']);
+    
+
+
+
+});
+

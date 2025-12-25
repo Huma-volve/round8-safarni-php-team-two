@@ -16,6 +16,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('flight_id')->constrained()->onDelete('cascade');
             $table->string('seat_number');
+            $table->unique(['flight_id', 'seat_number']);
+             $table->decimal('price', 8, 2);
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('class')->default(SeetsClass::ECONOMY->value);
             $table->boolean('is_available')->default(true);
             $table->timestamps();

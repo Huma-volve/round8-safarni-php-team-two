@@ -19,9 +19,12 @@ return new class extends Migration {
             $table->string('departure_airport');
             $table->string('arrival_airport');
             $table->dateTime('departure_time');
+            $table->date('departure_date');
             $table->dateTime('arrival_time');
-            $table->decimal('seat_price', 8, 2);
+            $table->date('arrival_date');
+           
             $table->integer('duration_minutes');
+            $table->index(['departure_airport', 'arrival_airport', 'departure_date'], 'flights_search_index');
             $table->string('status')->default(FlightStatus::SCHEDULED->value);
 
             $table->timestamps();
