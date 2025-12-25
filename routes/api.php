@@ -17,6 +17,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Hotels
     Route::get('hotels', [HotelController::class, 'index']);
     Route::get('hotels/{hotel}', [HotelController::class, 'show']);
+    //hotel near you
+    Route::get('nearby/{lat}/{lng}', [HotelController::class, 'nearbyHotels']);
+
 
     // Hotel Bookings
     Route::get('bookings', [HotelBookingController::class, 'index']);

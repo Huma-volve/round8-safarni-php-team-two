@@ -50,20 +50,21 @@ class HotelBookingController extends Controller
         $validated = $request->validated();
         $room = HotelRoom::findOrFail($validated['room_id']);
 
-        if (!$room->is_available || !$this->isRoomAvailable($room, $validated['check_in_date'], $validated['check_out_date'])) {
+        if (!$this->isRoomAvailable($room, $validated['check_in_date'], $validated['check_out_date'])) {
             return apiResponse(false, 'Room is not available for the selected dates', null, 422);
         }
 
-        $checkIn = Carbon::parse($validated['check_in_date']);
-        $checkOut = Carbon::parse($validated['check_out_date']);
+        // حساب الأيام بين check-in و check-out
+        $checkIn  = Carbon::parse($validated['check_in_date'])->startOfDay();
+        $checkOut = Carbon::parse($validated['check_out_date'])->startOfDay();
         $days = $checkOut->diffInDays($checkIn);
-        $totalPrice = $room->price * $days;
 
-        $hotel = $room->hotel;
-        if ($hotel->discount_percentage > 0) {
-            $discount = ($totalPrice * $hotel->discount_percentage) / 100;
-            $totalPrice = max(0, $totalPrice - $discount);
+        if ($days < 1) {
+            $days = 1; // لضمان يوم واحد على الأقل
         }
+
+        // حساب السعر بدون خصم
+        $totalPrice = $room->price * $days;
 
         DB::beginTransaction();
         try {
@@ -72,16 +73,20 @@ class HotelBookingController extends Controller
                 'bookable_id' => $room->id,
                 'status' => BookingStatus::PENDING->value,
                 'total_price' => $totalPrice,
-                'check_in_date' => $validated['check_in_date'],
-                'check_out_date' => $validated['check_out_date'],
+                'check_in_date' => $checkIn->toDateString(),
+                'check_out_date' => $checkOut->toDateString(),
                 'note_to_owner' => $validated['note_to_owner'] ?? null,
                 'booked_date' => now(),
             ]);
 
-            $room->update(['is_available' => false]);
             DB::commit();
 
-            return apiResponse(true, 'Booking created successfully', new BookingResource($booking->load(['bookable.hotel.photos', 'bookable.photos'])), 200);
+            return apiResponse(
+                true,
+                'Booking created successfully',
+                new BookingResource($booking->load(['bookable.hotel.photos', 'bookable.photos'])),
+                200
+            );
         } catch (\Exception $e) {
             DB::rollBack();
             return apiResponse(false, 'Failed to create booking', $e->getMessage(), 500);
@@ -109,9 +114,13 @@ class HotelBookingController extends Controller
         }
 
         $booking->update(['status' => BookingStatus::CANCELLED->value]);
-        $booking->bookable->update(['is_available' => true]);
 
-        return apiResponse(true, 'Booking cancelled successfully', new BookingResource($booking->load(['bookable.hotel.photos', 'bookable.photos'])), 200);
+        return apiResponse(
+            true,
+            'Booking cancelled successfully',
+            new BookingResource($booking->load(['bookable.hotel.photos', 'bookable.photos'])),
+            200
+        );
     }
 
     private function isRoomAvailable(HotelRoom $room, $checkIn, $checkOut): bool
