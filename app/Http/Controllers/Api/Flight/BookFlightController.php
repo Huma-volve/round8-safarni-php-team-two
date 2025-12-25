@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Flight;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Flight\BookRequest;
+use App\Http\Resources\Flight\TicketResource;
 use App\Models\FlightSeat;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,29 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookFlightController extends Controller
 {
+
+    public function index()
+    {
+        // $user_id = auth()->id();
+        $user_id = 2; // مؤقتًا للاختبار
+        $tickets = Ticket::with(['flightSeat.flight', 'flightSeat.flight', 'flightSeat.flight'])
+        ->where('user_id', $user_id)
+        ->orderByRaw("FIELD(status, 'booked', 'cancelled')") // booked ييجي الأول
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    if ($tickets->isEmpty()) {
+        return apiResponse(true, 'No tickets found for this user', [], 200);
+    }
+            // dd($tickets);
+        return apiResponse(
+            true,
+            'User tickets retrieved successfully',
+            TicketResource::collection($tickets),
+            200
+        );
+    }
+
     public function bookSeat(BookRequest $request, $flightId)
     {
 

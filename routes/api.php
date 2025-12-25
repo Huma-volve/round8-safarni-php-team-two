@@ -34,7 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('hotels/{hotel}/update-ratings/{rating}', [HotelRatingController::class, 'update']);
     Route::post('hotels/{hotel}/delete-ratings/{rating}', [HotelRatingController::class, 'destroy']);
 
-});
+}); 
+
+    Route::get('flights/index', [BookFlightController   ::class, 'index']);
+
 
 // Flights
 Route::middleware('auth:sanctum')->prefix('flights/')->group(function () {
