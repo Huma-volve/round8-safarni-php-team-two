@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'userid',
         'password',
         'status',
         'address',
@@ -71,5 +72,9 @@ class User extends Authenticatable
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+     public function flightSeats()
+    {
+        return $this->hasMany(Flightseat::class);
     }
 }

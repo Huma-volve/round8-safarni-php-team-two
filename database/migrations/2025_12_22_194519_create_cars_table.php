@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -20,6 +19,7 @@ return new class extends Migration
             $table->string('price_per_hour');
             $table->string('location');
             $table->boolean('is_available')->default(true);
+            $table->index(['location', 'is_available'], 'cars_location_available_index');
             $table->timestamps();
         });
     }

@@ -14,8 +14,9 @@ class Flight extends Model
         'departure_airport',
         'arrival_airport',
         'departure_time',
+        'departure_date',
         'arrival_time',
-        'seat_price',
+        'arrival_date',
         'duration_minutes',
         'status',
     ];
@@ -32,7 +33,7 @@ class Flight extends Model
     }
     public function seats()
     {
-        return $this->hasMany(Flight_seats::class);
+        return $this->hasMany(Flightseat::class);
     }
 
     /**
