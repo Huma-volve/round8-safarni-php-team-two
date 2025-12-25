@@ -78,7 +78,7 @@ class BookFlightController extends Controller
     public function cancelTicket( $ticketId)
     {
         DB::beginTransaction();
-        // $user_id = auth()->id();
+        $user_id = auth()->id();
         $user_id = 2; // مؤقتًا للاختبار
         try {
             // استرجاع التذكرة مع المقعد والرحلة

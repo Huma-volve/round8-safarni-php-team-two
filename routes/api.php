@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('hotels/{hotel}/delete-ratings/{rating}', [HotelRatingController::class, 'destroy']);
 
 });
-    Route::post('flights/{ticketId}/cancel-seat', [BookFlightController::class, 'cancelTicket']);
 
 // Flights
 Route::middleware('auth:sanctum')->prefix('flights/')->group(function () {
@@ -44,6 +43,8 @@ Route::middleware('auth:sanctum')->prefix('flights/')->group(function () {
     Route::get('{flightId}/seats', [FlightController::class, 'seats']);
 
     Route::post('{flightId}/book-seat', [BookFlightController::class, 'bookSeat']);
+    Route::post('{ticketId}/cancel-seat', [BookFlightController::class, 'cancelTicket']);
+    
 
 
 
